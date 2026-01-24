@@ -1,0 +1,1 @@
+In ECMP, packets belonging to the same flow follow the same path, while different flows may be distributed across multiple equal-cost paths.
