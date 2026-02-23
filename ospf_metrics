@@ -1,0 +1,109 @@
+
+---
+
+1️⃣ OSPF Cost
+
+This is how OSPF decides the “best path”.
+
+Lower cost = preferred path.
+
+Each link/interface has a cost, and OSPF adds them up along a path to pick the lowest total.
+
+
+Formula:
+
+\text{OSPF Cost} = \frac{\text{Reference Bandwidth}}{\text{Interface Bandwidth}}
+
+If multiple paths to the same destination, OSPF picks the one with lowest total cost.
+
+
+
+---
+
+2️⃣ OSPF Metric
+
+In OSPF, the metric = cost.
+
+Some protocols call it “metric,” OSPF calls it cost, but basically it’s the same idea: “how good/bad a path is.”
+
+
+
+---
+
+3️⃣ Bandwidth
+
+This is the speed of the interface in bits per second.
+
+Examples:
+
+FastEthernet = 100 Mbps
+
+GigabitEthernet = 1 Gbps
+
+
+Used in the cost formula. Higher bandwidth → lower cost → more preferred.
+
+
+
+---
+
+4️⃣ Reference Bandwidth
+
+This is a constant OSPF uses as the numerator in the cost formula.
+
+Default = 100 Mbps in Cisco (old), but often changed for modern networks.
+
+Example: On Gigabit links, default 100 Mbps → cost = 100 / 1000 = 0.1 → rounded to 1 (Cisco always rounds down to 1 min)
+
+
+Tip: If you don’t adjust reference bandwidth in modern high-speed networks, OSPF may treat 100 Mbps and 1 Gbps links as equal cost, which is not what you want.
+
+
+---
+
+5️⃣ Clock Rate
+
+Relevant for serial interfaces in lab or point-to-point WANs.
+
+Only set on the DCE (Data Communication Equipment) side of the serial link.
+
+Defines the speed of the serial link. OSPF uses interface bandwidth for cost, so the faster the clock rate, the higher the “bandwidth” OSPF sees → lower cost.
+
+
+TL;DR: Clock rate → bandwidth → cost → OSPF chooses best path.
+
+
+---
+
+6️⃣ Putting It All Together
+
+OSPF looks at all paths.
+
+For each interface, it calculates:
+
+
+\text{Cost} = \frac{\text{Reference Bandwidth}}{\text{Interface Bandwidth}}
+
+Path with lowest total cost wins.
+
+On serial links, set clock rate if you’re labbing, otherwise OSPF sees the default bandwidth.
+
+
+
+---
+
+💡 Example
+
+Reference bandwidth = 100 Mbps
+
+FastEthernet = 100 Mbps → Cost = 100/100 = 1
+
+GigabitEthernet = 1000 Mbps → Cost = 100/1000 = 0.1 → rounded 1
+
+10 Gbps = 10000 Mbps → Cost = 100/10000 = 0.01 → rounded 1 (so for big networks, adjust reference bandwidth!)
+
+
+
+---
+
+creds to chatgpt 
